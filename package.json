@@ -1,0 +1,24 @@
+{
+  "name": "exel",
+  "version": "1.0.0",
+  "description": "Pure JavaScript Excel Application",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexlexan/excel.git"
+  },
+  "keywords": [
+    "js",
+    "javascript",
+    "excel"
+  ],
+  "author": "Alexey Milutkin <alexmilutkin1329@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexlexan/excel/issues"
+  },
+  "homepage": "https://github.com/alexlexan/excel#readme"
+}

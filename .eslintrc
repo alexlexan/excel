@@ -9,7 +9,7 @@
     "semi": "off",
     "comma-dangle": "off",
     "linebreak-style": ["error", "windows"],
-    "eol-last": ["error", "never"],
+    "eol-last": ["error", "windows"],
     "quotes": [1, "single", { "avoidEscape": true }]
   },
   "extends": ["eslint:recommended", "google"],

@@ -4,9 +4,17 @@
       "target": "es5",
       "noImplicitAny": true,
       "removeComments": true,
-      "sourceMap": true
+      "sourceMap": true,
+      "baseUrl": "./",
+      "paths": {
+        "@/*": ["src/*"],
+        "@core/*": ["src/core/*"]
+      }
     },
     "exclude": [
       "node_modules"
+    ],
+    "include": [
+      "./src/**/*"
     ]
   }

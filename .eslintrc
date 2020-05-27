@@ -6,11 +6,22 @@
     "node": true
   },
   "rules": {
+    "no-unused-vars": "off",
     "semi": "off",
+    "indent": ["error", 2],
     "comma-dangle": "off",
     "linebreak-style": ["error", "windows"],
     "eol-last": ["error", "windows"],
-    "quotes": [1, "single", { "avoidEscape": true }]
+    "quotes": [1, "single", { "avoidEscape": true }],
+    "require-jsdoc": ["error", {
+      "require": {
+          "FunctionDeclaration": false,
+          "MethodDefinition": false,
+          "ClassDeclaration": false,
+          "ArrowFunctionExpression": false,
+          "FunctionExpression": false
+      }
+  }]
   },
   "extends": ["eslint:recommended", "google"],
   "parserOptions": {

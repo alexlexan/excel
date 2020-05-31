@@ -18,7 +18,7 @@ export class DomListener {
     this.listeners.forEach((listener) => {
       const method = getMethodName(listener);
 
-      const _this:any = this; // Пересмотреть типизацию
+      const _this = (this as any); // Пересмотреть типизацию
       _this[method] = _this[method].bind(this)
       if (!_this[method]) {
         throw new Error(

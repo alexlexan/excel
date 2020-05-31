@@ -1,3 +1,4 @@
+import {ExcelComponent} from '@core/ExcelComponent'
 import {IDom} from '@/core/dom'
 import {$} from '@/core/dom'
 import {Header} from '@/components/header/Header'
@@ -6,20 +7,20 @@ import {Formula} from '@/components/formula/Formula'
 import {Table} from '@/components/table/Table'
 
 export interface IOptions {
-  components: InterfaceComponent[];
+  components: ComponentType[];
 }
 
-type InterfaceComponent =
+type ComponentType =
   | typeof Header
   | typeof Toolbar
   | typeof Formula
   | typeof Table
 
-export type InterfaceComponentClass = Header | Toolbar | Formula | Table
+export type ComponentTypeInstance = ExcelComponent
 
 export class Excel {
   $el: IDom
-  components: (InterfaceComponent | InterfaceComponentClass)[] = []
+  components: (ComponentType | ComponentTypeInstance)[] = []
 
   constructor(selector: string, options: IOptions) {
     this.$el = $(selector)
@@ -29,12 +30,12 @@ export class Excel {
   getRoot(): IDom {
     const $root: IDom = $.create('div', 'excel')
 
-    this.components = this.components.map((Component: InterfaceComponent) => {
+    this.components = this.components.map((Component: ComponentType) => {
       const $el: IDom = $.create('div', Component.className)
       const component = new Component($el)
-      if (component.name) {
-        (window as any)['c' + component.name] = component
-      }
+      // if (component.name) {
+      //   (window as any)['c' + component.name] = component
+      // }
       $el.html(component.toHTML())
       $root.append($el)
       return component
@@ -46,7 +47,7 @@ export class Excel {
   render(): void {
     this.$el.append(this.getRoot())
 
-    this.components.forEach((component: InterfaceComponentClass) =>
+    this.components.forEach((component: ComponentTypeInstance) =>
       component.init()
     )
   }

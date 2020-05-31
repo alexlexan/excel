@@ -1,6 +1,12 @@
 import {ExcelComponent} from '@core/ExcelComponent'
-import {IDom} from '@/core/dom'
+import {IDom, $} from '@/core/dom'
 import {createTable} from './table.template'
+import {resizeHandler} from './table.resize'
+import {shouldResize} from './table.functions'
+
+export interface EventTargetElement {
+  target: HTMLElement;
+}
 
 export class Table extends ExcelComponent {
   static className = 'excel__table'
@@ -8,15 +14,17 @@ export class Table extends ExcelComponent {
   constructor($root: IDom) {
     super($root, {
       name: 'Table',
-      listeners: ['input'],
+      listeners: ['mousedown'],
     })
   }
 
-  onInput(event: Event): void {
-    console.log('on Input formula', event)
+  onMousedown(event: EventTargetElement): void {
+    if (shouldResize(event)) {
+      resizeHandler(this.$root, event)
+    }
   }
 
   toHTML() {
-    return createTable()
+    return createTable(20)
   }
 }

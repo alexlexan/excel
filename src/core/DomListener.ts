@@ -1,12 +1,12 @@
-import {IDom} from '@/core/dom'
+import {Dom} from './dom';
 import {capitalize} from './utils'
 
 export class DomListener {
-  $root: IDom
+  $root: Dom
   listeners: string[]
   name: string
 
-  constructor($root: IDom, listeners: string[] = []) {
+  constructor($root: Dom, listeners: string[] = []) {
     if (!$root) {
       throw new Error('No $root provier for DomListener!')
     }

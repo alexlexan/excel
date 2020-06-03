@@ -1,10 +1,10 @@
 import {ExcelComponent} from '@core/ExcelComponent'
-import {IDom} from '@/core/dom'
+import {Dom} from '@/core/dom'
 
 export class Toolbar extends ExcelComponent {
   static className = 'excel__toolbar'
 
-  constructor($root: IDom) {
+  constructor($root: Dom) {
     super($root, {
       name: 'Toolbar',
       listeners: ['input'],

@@ -1,10 +1,10 @@
-import {IDom} from '@/core/dom'
+import {Dom} from '@/core/dom'
 import {ExcelComponent} from '@core/ExcelComponent'
 
 export class Formula extends ExcelComponent {
   static className: string = 'excel__formula'
 
-  constructor($root: IDom) {
+  constructor($root: Dom) {
     super($root, {
       name: 'Formula',
       listeners: ['input'],

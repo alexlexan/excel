@@ -1,5 +1,5 @@
+import {Dom} from './../../core/dom'
 import {ExcelComponent} from '@core/ExcelComponent'
-import {IDom} from '@/core/dom'
 import {$} from '@/core/dom'
 import {Header} from '@/components/header/Header'
 import {Toolbar} from '@/components/toolbar/Toolbar'
@@ -19,7 +19,7 @@ type ComponentType =
 export type ComponentTypeInstance = ExcelComponent
 
 export class Excel {
-  $el: IDom
+  $el: Dom
   components: (ComponentType | ComponentTypeInstance)[] = []
 
   constructor(selector: string, options: IOptions) {
@@ -27,11 +27,11 @@ export class Excel {
     this.components = options.components
   }
 
-  getRoot(): IDom {
-    const $root: IDom = $.create('div', 'excel')
+  getRoot(): Dom {
+    const $root: Dom = $.create('div', 'excel')
 
     this.components = this.components.map((Component: ComponentType) => {
-      const $el: IDom = $.create('div', Component.className)
+      const $el: Dom = $.create('div', Component.className)
       const component = new Component($el)
       // if (component.name) {
       //   (window as any)['c' + component.name] = component

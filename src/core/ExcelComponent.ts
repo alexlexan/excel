@@ -1,5 +1,5 @@
 import {DomListener} from '@core/DomListener'
-import {IDom} from '@/core/dom'
+import {Dom} from '@/core/dom'
 
 interface IOptions {
   name: string
@@ -9,7 +9,7 @@ interface IOptions {
 export class ExcelComponent extends DomListener {
   // Возвращает шаблон компонента
   name: string
-  constructor($root: IDom, options: IOptions) {
+  constructor($root: Dom, options: IOptions) {
     super($root, options.listeners)
     this.name = options.name || ''
   }

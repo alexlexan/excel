@@ -1,5 +1,5 @@
 import {ExcelComponent} from '@core/ExcelComponent'
-import {IDom, $} from '@/core/dom'
+import {Dom, $} from '@/core/dom'
 import {createTable} from './table.template'
 import {resizeHandler} from './table.resize'
 import {shouldResize} from './table.functions'
@@ -11,7 +11,7 @@ export interface EventTargetElement {
 export class Table extends ExcelComponent {
   static className = 'excel__table'
 
-  constructor($root: IDom) {
+  constructor($root: Dom) {
     super($root, {
       name: 'Table',
       listeners: ['mousedown'],

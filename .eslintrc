@@ -8,11 +8,16 @@
   "rules": {
     "no-unused-vars": "off",
     "semi": "off",
-    "indent": ["error", 2],
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "comma-dangle": "off",
     "linebreak-style": ["error", "windows"],
     "eol-last": ["error", "windows"],
     "quotes": [1, "single", { "avoidEscape": true }],
+    "space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "never"
+    }],
     "require-jsdoc": ["error", {
       "require": {
           "FunctionDeclaration": false,

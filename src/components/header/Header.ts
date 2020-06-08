@@ -1,13 +1,15 @@
+import {IOptions, componentOptionsType} from './../excel/Excel';
 import {ExcelComponent} from '@core/ExcelComponent'
 import {Dom} from '@/core/dom'
 
 export class Header extends ExcelComponent {
   static className = 'excel__header'
 
-  constructor($root: Dom) {
+  constructor($root: Dom, options: object) {
     super($root, {
       name: 'Header',
       listeners: ['input'],
+      ...options as componentOptionsType,
     })
   }
 

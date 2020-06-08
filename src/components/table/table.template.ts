@@ -2,13 +2,20 @@ const CODES = {
   A: 65,
   Z: 90,
 }
-
-function toCell(_: string, col: number): string {
-  return `
-    <div class="cell" contenteditable data-col="${col}"></div>
+function toCell(row: number) {
+  return function (_: string, col: number) {
+    return `
+    <div  class="cell" 
+          contenteditable=false
+          tabindex="0"
+          data-col="${col}"
+          data-id="${row}:${col}"
+          data-type="cell">
+    </div>
     `
+  }
 }
-
+// contenteditable
 function toColumn(col: string, index: number): string {
   return `
     <div class="column" data-type="resizable" data-col="${index}">
@@ -47,9 +54,9 @@ export function createTable(rowsCount: number = 20): string {
 
   rows.push(createRow(null, cols))
 
-  for (let i = 0; i < rowsCount; i++) {
-    const cells = new Array(colsCount).fill('').map(toCell).join('')
-    rows.push(createRow(i + 1, cells))
+  for (let row = 0; row < rowsCount; row++) {
+    const cells = new Array(colsCount).fill('').map(toCell(row)).join('')
+    rows.push(createRow(row + 1, cells))
   }
 
   return rows.join('')

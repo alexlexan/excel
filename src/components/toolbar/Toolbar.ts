@@ -1,13 +1,15 @@
+import {componentOptionsType} from './../excel/Excel';
 import {ExcelComponent} from '@core/ExcelComponent'
 import {Dom} from '@/core/dom'
 
 export class Toolbar extends ExcelComponent {
   static className = 'excel__toolbar'
 
-  constructor($root: Dom) {
+  constructor($root: Dom, options: object) {
     super($root, {
       name: 'Toolbar',
       listeners: ['input'],
+      ...options as componentOptionsType,
     })
   }
 

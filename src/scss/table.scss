@@ -65,17 +65,43 @@
     width: $cell-width;
     height: 100%;
     border: 1px solid #e2e3e3;
-    border-top: 0;
-    border-left: 0;
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
     color: #111;
     white-space: nowrap;
     outline: none;
+    background: #fff;
 
 
     &.selected {
-      border: none;
-      outline: 2px solid $primary-color;
-      z-index: 2;
+      border: 2px solid $primary-color;
+    }
+    &.selected__top {
+      border-top: 2px solid $primary-color;
+      &.copy {
+        border-top: 2px dashed $primary-color;
+      }
+    }
+    &.selected__bottom {
+      border-bottom: 2px solid $primary-color;
+      &.copy {
+        border-bottom: 2px dashed $primary-color;
+      }
+    }
+    &.selected__left {
+      border-left: 2px solid $primary-color;
+      &.copy {
+        border-left: 2px dashed $primary-color;
+      }
+    }
+    &.selected__right {
+      border-right: 2px solid $primary-color;
+      &.copy {
+        border-right: 2px dashed $primary-color;
+      }
+    }
+    &.selected__background {
+      background-color: $background-color;
     }
   }
 

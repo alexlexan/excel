@@ -8,6 +8,8 @@
   "rules": {
     "no-unused-vars": "off",
     "semi": "off",
+    "no-dupe-class-members": "off",
+    "operator-linebreak": [2, "before", { "overrides": { "?": "before", "=": "after", ":": "before","&&": "ignore", "+": "ignore" } }],
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "comma-dangle": "off",
     "linebreak-style": ["error", "windows"],

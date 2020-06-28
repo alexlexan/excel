@@ -1,25 +1,36 @@
-import {IOptions, componentOptionsType} from './../excel/Excel';
+import {componentOptionsType, EventTargetElement} from '@/type'
 import {ExcelComponent} from '@core/ExcelComponent'
-import {Dom} from '@/core/dom'
+import {Dom, $} from '@/core/dom'
+import {changeTitle} from '@/redux/actions'
+import {defaultTitle} from '@/constance'
 
 export class Header extends ExcelComponent {
-  static className = 'excel__header'
+  static className: string = 'excel__header'
 
-  constructor($root: Dom, options: object) {
+  constructor($root: Dom, options: componentOptionsType) {
     super($root, {
       name: 'Header',
-      listeners: ['input'],
-      ...options as componentOptionsType,
+      listeners: ['input', 'keydown'],
+      ...options,
     })
   }
 
-  onInput(event: Event): void {
-    console.log('on Input formula', event)
+  onKeydown(event: EventTargetElement) {
+    const {key} = event
+    if ( key == 'Enter') {
+      $(event.target).blur()
+    }
+  }
+
+  onInput(event: EventTargetElement): void {
+    const $target = $(event.target)
+    this.$dispatch(changeTitle($target.text()))
   }
 
   toHTML() {
+    const title = this.store.getState().title || defaultTitle
     return `
-    <input type="text" class="input" value="Новая таблица" />
+    <input type="text" class="input" value="${title}" />
     <div>
 
       <div class="button">

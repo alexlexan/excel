@@ -1,22 +1,26 @@
-import {EventTargetElement} from './../components/table/Table';
-import {matrixObject} from './../components/table/table.functions'
+import {IndexableString} from '@/type';
+import {EventTargetElement} from '@/type';
+import {TableMatrix} from '@/type'
 
 type onFuncType = (event: EventTargetElement | KeyboardEvent | Event) => void
-type StylesType = {
-  [name: string]: string,
-}
 interface ICSS extends CSSStyleDeclaration {
   [name: string]: any;
 }
 
+interface IDataSet extends DOMStringMap {
+  [name: string]: string;
+}
+
 export class Dom {
-  $el: HTMLElement
+  $el: HTMLElement;
+  static this: Dom
   constructor(selector: string | HTMLElement) {
-    this.$el =
-      typeof selector === 'string' ? document.querySelector(selector) : selector
+    this.$el = typeof selector === 'string'
+      ? document.querySelector(selector)
+      : selector
   }
 
-  html(html: string): string | this {
+  html(html?: string): string | this {
     if (typeof html === 'string') {
       this.$el.innerHTML = html
       return this
@@ -24,8 +28,10 @@ export class Dom {
     return this.$el.outerHTML.trim()
   }
 
-  text(text?:string) {
-    if (typeof text === 'string') {
+  text(): string
+  text(text:string): Dom
+  text(text?:string): Dom | string {
+    if (typeof text !== 'undefined') {
       this.$el.textContent = text
       return this
     }
@@ -74,7 +80,7 @@ export class Dom {
   }
 
   find(selector: string) {
-    return $(this.$el.querySelector(selector) as HTMLElement)
+    return $(this.$el.querySelector(selector))
   }
 
   findAll(selector: string) {
@@ -96,24 +102,40 @@ export class Dom {
     }
   }
 
-  addClass(className: string) {
-    this.$el.classList.add(className)
+
+  addClass(className: string | string[]) {
+    if (typeof className == 'string') {
+      this.$el.classList.add(className)
+      return this
+    }
+    this.$el.classList.add(...className as string[])
+    return this
   }
 
-  removeClass(className: string) {
-    this.$el.classList.remove(className)
+  removeClass(className: string[]) {
+    this.$el.classList.remove(...className)
+    return this
   }
 
-  css(styles: StylesType = {}): void {
+  css(styles: IndexableString = {}): void {
     Object.keys(styles).forEach((key: string) => {
       const style: ICSS = this.$el.style
       style[key] = styles[key]
     })
   }
 
-  id(parse?:boolean):string | matrixObject {
+  getStyles(styles:string[] = []) {
+    return styles.reduce((res:IndexableString, s:any) => {
+      res[s] = this.$el.style[s]
+      return res
+    }, {})
+  }
+
+  id():string
+  id(parse:boolean):TableMatrix
+  id(parse?:boolean):string | TableMatrix {
     if (parse) {
-      const parsed:string[] = (this.id() as string).split(':')
+      const parsed:string[] = this.id().split(':')
       return {
         row: +parsed[0],
         col: +parsed[1]
@@ -122,7 +144,9 @@ export class Dom {
     return this.data.id
   }
 
-  attr(attribute:string, value?:string) {
+  attr(attribute:string): string;
+  attr(attribute:string, value:string): Dom;
+  attr(attribute:string, value?:string): string | Dom {
     if (value) {
       this.$el.setAttribute(attribute, value)
       return this
@@ -141,6 +165,8 @@ export class Dom {
   }
 }
 
+export function $(selector: HTMLElement): Dom
+export function $(selector: string): Dom
 export function $(selector: string | HTMLElement): Dom {
   return new Dom(selector)
 }

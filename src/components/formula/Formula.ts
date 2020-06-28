@@ -1,16 +1,18 @@
-import {componentOptionsType} from './../excel/Excel';
+import {IndexableString} from './../../type'
+import {componentOptionsType, EventTargetElement} from '@/type'
 import {Dom, $} from '@/core/dom'
 import {ExcelComponent} from '@core/ExcelComponent'
-import {EventTargetElement} from '../table/Table';
 
 export class Formula extends ExcelComponent {
   static className: string = 'excel__formula'
+  $formula: Dom
 
-  constructor($root: Dom, options: object) {
+  constructor($root: Dom, options: componentOptionsType) {
     super($root, {
       name: 'Formula',
       listeners: ['input', 'keydown'],
-      ...options as componentOptionsType,
+      subscribe: ['currentText'],
+      ...options,
     })
   }
 
@@ -18,6 +20,10 @@ export class Formula extends ExcelComponent {
     return `<div class="info">fx</div>
     <div id="formula-input" class="input" contenteditable spellcheck="false">
     </div>`
+  }
+
+  storeChanged({currentText}: IndexableString) {
+    this.$formula.text(currentText)
   }
 
   onInput(event: EventTargetElement): void {
@@ -35,14 +41,10 @@ export class Formula extends ExcelComponent {
   init() {
     super.init()
 
-    const $formula = this.$root.find('#formula-input')
+    this.$formula = this.$root.find('#formula-input')
 
-    this.$on('table:select', ($cell:Dom) => {
-      $formula.text($cell.text() as string)
-    })
-
-    this.$on('table:input', ($cell:Dom) => {
-      $formula.text($cell.text() as string)
+    this.$on('table:select', ($cell: Dom) => {
+      this.$formula.text($cell.data.value)
     })
   }
 }

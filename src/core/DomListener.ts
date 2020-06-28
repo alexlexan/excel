@@ -14,18 +14,17 @@ export class DomListener {
     this.listeners = listeners
   }
 
-  initDOMListeners():void {
-    this.listeners.forEach((listener) => {
+  initDOMListeners(this:any):void {
+    this.listeners.forEach((listener:string) => {
       const method = getMethodName(listener);
 
-      const _this = (this as any); // Пересмотреть типизацию
-      _this[method] = _this[method].bind(this)
-      if (!_this[method]) {
+      this[method] = this[method].bind(this)
+      if (!this[method]) {
         throw new Error(
-          `Method ${method} is not implimented in ${_this.name} Component`
+          `Method ${method} is not implimented in ${this.name} Component`
         )
       }
-      this.$root.on(listener, _this[method])
+      this.$root.on(listener, this[method])
     })
   }
 

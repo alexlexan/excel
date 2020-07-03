@@ -6,7 +6,8 @@ import {
   APPLY_STYLE,
   COPY_CELLS,
   NEXT_STATE,
-  PREV_STATE
+  PREV_STATE,
+  UPDATE_DATE,
 } from './types'
 
 export function tableReize(data: object) {
@@ -62,5 +63,11 @@ export function prevState(data: string) {
   return {
     type: PREV_STATE,
     data,
+  }
+}
+
+export function updateData() {
+  return {
+    type: UPDATE_DATE,
   }
 }

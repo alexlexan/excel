@@ -20,6 +20,8 @@ export class Dom {
       : selector
   }
 
+  html(): string
+  html(html:string): this
   html(html?: string): string | this {
     if (typeof html === 'string') {
       this.$el.innerHTML = html

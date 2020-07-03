@@ -26,6 +26,10 @@ export type Store = {
   getState(): any,
 }
 
+export type Subscribe = {
+  unsubscribe(): void
+}
+
 export type State = {
   title?: string
   colState?: Indexable,
@@ -36,6 +40,7 @@ export type State = {
   currentStyles?: Indexable,
   prevState?: boolean,
   nextState?: boolean,
+  openedDate?: string,
 }
 
 export type ComponentNameType =

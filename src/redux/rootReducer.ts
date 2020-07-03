@@ -6,7 +6,8 @@ import {
   APPLY_STYLE,
   COPY_CELLS,
   NEXT_STATE,
-  PREV_STATE
+  PREV_STATE,
+  UPDATE_DATE,
 } from './types'
 
 const prevState: any[] = []
@@ -85,6 +86,8 @@ export function rootReducer(state: any, action: any) {
         }
       }
       return {...state}
+    case UPDATE_DATE:
+      return {...state, openedDate: new Date().toJSON()}
     default:
       return state
   }
@@ -96,7 +99,7 @@ function value(state: any, field: string, action: any) {
   return val
 }
 
-function changeState(prevState:any, nextState:any, state:any) {
+function changeState(prevState: any, nextState: any, state: any) {
   prevState.shift()
   nextState.unshift({...state})
 }

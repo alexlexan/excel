@@ -5,6 +5,7 @@ import {$} from '@/core/dom'
 import {ComponentNameType,
   ComponentTypeInstance,
   Store, ExcelOptions, componentOptionsType} from '@/type'
+import {updateData} from '@/redux/actions'
 
 export class Excel {
   $el: Dom
@@ -12,8 +13,7 @@ export class Excel {
   emmiter: Emmiter
   store: Store
   subscriber: StoreSubscriber
-  constructor(selector: string, options: ExcelOptions) {
-    this.$el = $(selector)
+  constructor(options: ExcelOptions) {
     this.components = options.components
     this.emmiter = new Emmiter()
     this.store = options.store
@@ -40,9 +40,8 @@ export class Excel {
     return $root
   }
 
-  render(): void {
-    this.$el.append(this.getRoot())
-
+  init(): void {
+    this.store.dispatch(updateData())
     this.subscriber.subscribeComponents(this.components as ComponentNameType[])
 
     this.components.forEach((component: ComponentTypeInstance) =>

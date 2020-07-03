@@ -69,3 +69,7 @@ export function isEmpty(obj: object) {
   }
   return true
 }
+
+export function clone(obj: object) {
+  return JSON.parse(JSON.stringify(obj))
+}

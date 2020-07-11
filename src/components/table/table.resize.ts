@@ -1,25 +1,28 @@
-import {EventTargetElement} from '@/type'
+import {EventTargetElement, TableResizeHandler} from '@/type'
 import {$, Dom} from '@/core/dom'
 import {getMinResize} from './table.functions'
 
-export function resizeHandler($root: Dom, event: EventTargetElement): object {
-  return new Promise((resolve) => {
+export function resizeHandler(
+  $root: Dom,
+  event: EventTargetElement
+): Promise<TableResizeHandler> {
+  return new Promise<TableResizeHandler>((resolve) => {
     const $resizer = $(event.target)
     const $parent = $resizer.closest('[data-type="resizable"]')
     const coords = $parent.getCoords()
     const type = $resizer.data.resize
 
     const sideProp = type === 'col' ? 'bottom' : 'right'
-    let value: number
+    let valueResize: number
 
     // смещение для линии выделения колонок
-    const valuePropRightResizerCol = $parent.findProperty($resizer, 'right')
+    const valuePropRightResizerCol = +$parent.findProperty($resizer, 'right')
     // минимальная ширина колонки
-    const valueMinWidthCol = $parent.findProperty($parent, 'min-width', 40)
+    const valueMinWidthCol = +$parent.findProperty($parent, 'min-width', 40)
     // смещение для линии выделения колонок
-    const valuePropBottomResizerRow = $parent.findProperty($resizer, 'bottom')
+    const valuePropBottomResizerRow = +$parent.findProperty($resizer, 'bottom')
     // минимальная высота строки
-    const valueMinHeightRow = $parent.findProperty($parent, 'min-height', 20)
+    const valueMinHeightRow = +$parent.findProperty($parent, 'min-height', 20)
 
     $resizer.css({
       opacity: '1',
@@ -37,9 +40,9 @@ export function resizeHandler($root: Dom, event: EventTargetElement): object {
 
         if (delta < valueMinResizeWidthColumn) {
           delta = valueMinResizeWidthColumn
-          value = valueMinWidthCol
+          valueResize = valueMinWidthCol
         } else {
-          value = coords.width + delta - valuePropRightResizerCol
+          valueResize = coords.width + delta - valuePropRightResizerCol
         }
 
         $resizer.css({right: -delta + 'px'})
@@ -53,9 +56,9 @@ export function resizeHandler($root: Dom, event: EventTargetElement): object {
 
         if (delta < valueMinResizeHeightRow) {
           delta = valueMinResizeHeightRow
-          value = valueMinHeightRow
+          valueResize = valueMinHeightRow
         } else {
-          value = coords.height + delta - valuePropBottomResizerRow
+          valueResize = coords.height + delta - valuePropBottomResizerRow
         }
 
         $resizer.css({bottom: -delta + 'px'})
@@ -71,23 +74,24 @@ export function resizeHandler($root: Dom, event: EventTargetElement): object {
         [sideProp]: '0',
       })
 
-      if (!value) return // если перемещения не было
+      if (!valueResize) return // если перемещения не было
 
       if (type === 'col') {
-        $parent.css({width: value + 'px'})
+        $parent.css({width: valueResize + 'px'})
         $root
           .findAll(`[data-col="${$parent.data.col}"]`)
-          .forEach((el: HTMLElement) => (el.style.width = value + 'px'))
+          .forEach((el: HTMLElement) => (el.style.width = valueResize + 'px'))
         $resizer.css({
           right: '-8px',
         })
       } else {
-        $parent.css({height: value + 'px'})
+        $parent.css({height: valueResize + 'px'})
         $resizer.css({
           bottom: '-2px',
         })
       }
 
+      const value = String(valueResize)
       resolve({
         value,
         type,

@@ -1,4 +1,4 @@
-import {IndexableString} from './../../type'
+import {IndexableString} from '@/type'
 import {Dom} from '@/core/dom'
 import {selectCells} from './table.functions'
 

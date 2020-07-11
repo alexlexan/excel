@@ -1,10 +1,10 @@
+import {IndexableObject} from './../../type';
 import {defaultStyles} from '@/constance';
-import {EventTargetElement} from '@/type';
+import {EventTargetElement, IndexableString} from '@/type';
 import {componentOptionsType} from '@/type';
 import {ExcelStateComponent} from '@core/ExcelStateComponent'
 import {Dom, $} from '@/core/dom'
 import {createToolbar} from './toolbar.template';
-import * as actions from '@/redux/actions'
 
 export class Toolbar extends ExcelStateComponent {
   static className = 'excel__toolbar'
@@ -18,7 +18,7 @@ export class Toolbar extends ExcelStateComponent {
     })
   }
 
-  storeChanged(changes:any) {
+  storeChanged(changes: IndexableObject) {
     this.setState(changes.currentStyles)
   }
 

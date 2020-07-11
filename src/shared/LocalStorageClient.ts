@@ -1,3 +1,4 @@
+import {State} from '@/type'
 import {storage} from '@core/utils'
 
 function storageName(param: string) {
@@ -10,7 +11,7 @@ export class LocalStorageClient {
     this.name = storageName(name)
   }
 
-  save(state: any) {
+  save(state: State) {
     storage(this.name, state)
     return Promise.resolve()
   }

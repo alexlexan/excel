@@ -1,10 +1,7 @@
-import {IndexableString} from './../type';
-import {Store} from '@/type';
+import {Store, Actions} from '@/type';
 import {DomListener} from '@core/DomListener'
 import {Dom} from '@/core/dom'
 import {Emmiter} from '@/core/Emmiter'
-
-import * as actions from '@/redux/actions'
 
 export interface IOptions {
   name: string
@@ -12,10 +9,6 @@ export interface IOptions {
   emmiter: Emmiter
   store: Store,
   subscribe?: string[]
-}
-
-export type Literal = {
-  [key: string]: string
 }
 
 export class ExcelComponent extends DomListener {
@@ -54,12 +47,12 @@ export class ExcelComponent extends DomListener {
     this.unsubscribers.push(unsub)
   }
 
-  $dispatch(action:any) {
+  $dispatch(action: Actions) {
     this.store.dispatch(action)
   }
 
   // Сюда приходят только те поля на которые мы подписались
-  storeChanged(object:Literal, key: string) {}
+  storeChanged(object: any, key: string) {}
 
   isWatching(key:string) {
     return this.subscribe.includes(key)

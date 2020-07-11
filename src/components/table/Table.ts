@@ -23,6 +23,8 @@ import {
 } from './table.functions'
 import * as actions from '@/redux/actions'
 
+let NUMBER_ROW = 50
+
 export class Table extends ExcelStateComponent {
   static className = 'excel__table'
   selection: TableSelection
@@ -37,10 +39,19 @@ export class Table extends ExcelStateComponent {
     })
     this.isInCell = false
     this.copyTextCell = []
+    this.scrollTable = this.scrollTable.bind(this)
   }
 
   prepare() {
     this.selection = new TableSelection()
+  }
+
+  scrollTable() {
+    const windowBottom = document.documentElement.getBoundingClientRect().bottom
+    if (windowBottom < document.documentElement.clientHeight + 100) {
+      NUMBER_ROW = NUMBER_ROW + 50
+      this.$root.html(this.template)
+    }
   }
 
   onMousedown(event: EventTargetElement): void {
@@ -67,19 +78,19 @@ export class Table extends ExcelStateComponent {
     const $target = $(event.target)
     const isEditable = $target.attr('contenteditable')
     const keys = ['Enter', 'Tab']
-    const keysNav = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
+    const keysArrow = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown']
     const ctrlC = event.ctrlKey && event.keyCode === 67 && isEditable == 'false'
     const ctrlV = event.ctrlKey && event.keyCode === 86 && isEditable == 'false'
-    const isNavKey = [...keys, ...keysNav].includes(key)
-    const isNavKeyInCell = this.isInCell && keysNav.includes(key)
-    const shiftKeyInCell = this.isInCell && event.shiftKey && key == 'Enter'
-    const notNavKey =
+    const isNavKey = [...keys, ...keysArrow].includes(key)
+    const isKeyArrowsInCell = this.isInCell && keysArrow.includes(key)
+    const isShiftKeyInCell = this.isInCell && event.shiftKey && key == 'Enter'
+    const isNotNavKey =
       isEditable == 'false' &&
-      ![...keys, ...keysNav].includes(key) &&
+      ![...keys, ...keysArrow].includes(key) &&
       !event.shiftKey &&
       !event.ctrlKey
 
-    if (notNavKey) {
+    if (isNotNavKey) {
       setWriteMode($target, this.isInCell)
     }
 
@@ -90,13 +101,16 @@ export class Table extends ExcelStateComponent {
       )
       const textInCell = $cells.map(($el) => $el.text())
       const matrixSize = selectCells($cells)
-
       const stylesCells: string[] = []
+
       $cells.forEach(($el) => {
-        const style = $el.attr('style').replace(/width:.*;/, '').trim()
+        const style = $el
+          .attr('style')
+          .replace(/width:.*;/, '')
+          .trim()
         stylesCells.push(style)
       })
-      // без width
+
       this.selection.selectGroup($cells, true)
       this.copyTextCell.push(matrixSize, textInCell, stylesCells)
     }
@@ -127,7 +141,7 @@ export class Table extends ExcelStateComponent {
     }
 
     if (isNavKey) {
-      if (isNavKeyInCell || shiftKeyInCell) return
+      if (isKeyArrowsInCell || isShiftKeyInCell) return
       if (event.shiftKey) {
         key = `Shift${key}`
       }
@@ -158,7 +172,7 @@ export class Table extends ExcelStateComponent {
   }
 
   get template() {
-    return createTable(20, this.store.getState())
+    return createTable(NUMBER_ROW, this.store.getState())
   }
 
   selectCell($cell: Dom) {
@@ -171,7 +185,7 @@ export class Table extends ExcelStateComponent {
   async resizeTable(event: EventTargetElement) {
     try {
       const data = await resizeHandler(this.$root, event)
-      this.$dispatch(actions.tableReize(data))
+      this.$dispatch(actions.tableResize(data))
     } catch (e) {
       console.warn('Resize data', e.message)
     }
@@ -213,17 +227,20 @@ export class Table extends ExcelStateComponent {
     })
 
     this.$on('toolbar:historyState', (value: string) => {
-      if ( value === 'prevState') {
-        this.$dispatch(
-          actions.prevState(value)
-        )
+      if (value === 'prevState') {
+        this.$dispatch(actions.prevState(value))
       } else if (value === 'nextState') {
-        this.$dispatch(
-          actions.nextState(value)
-        )
+        this.$dispatch(actions.nextState(value))
       }
       const state = this.store.getState()
       this.setState(state)
     })
+
+    window.addEventListener('scroll', this.scrollTable)
+  }
+
+  destroy() {
+    super.destroy()
+    window.removeEventListener('scroll', this.scrollTable)
   }
 }

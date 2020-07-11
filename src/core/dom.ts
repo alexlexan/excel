@@ -1,15 +1,4 @@
-import {IndexableString} from '@/type';
-import {EventTargetElement} from '@/type';
-import {TableMatrix} from '@/type'
-
-type onFuncType = (event: EventTargetElement | KeyboardEvent | Event) => void
-interface ICSS extends CSSStyleDeclaration {
-  [name: string]: any;
-}
-
-interface IDataSet extends DOMStringMap {
-  [name: string]: string;
-}
+import {IndexableString, ICSS, CallbackFunction, TableMatrix} from '@/type';
 
 export class Dom {
   $el: HTMLElement;
@@ -48,11 +37,11 @@ export class Dom {
     return this
   }
 
-  on(eventType: string, callback: onFuncType, options?: object): void {
+  on(eventType: string, callback: CallbackFunction, options?: object): void {
     this.$el.addEventListener(eventType, callback, options)
   }
 
-  off(eventType: string, callback: onFuncType) {
+  off(eventType: string, callback: CallbackFunction) {
     this.$el.removeEventListener(eventType, callback)
   }
 
@@ -92,7 +81,7 @@ export class Dom {
   findProperty(
     selector: Dom,
     property: string,
-    defaultProp?: any,
+    defaultProp?: number,
     getProp?: boolean
   ) {
     const valueProp = getComputedStyle(selector.$el).getPropertyValue(property)
@@ -121,14 +110,15 @@ export class Dom {
 
   css(styles: IndexableString = {}): void {
     Object.keys(styles).forEach((key: string) => {
-      const style: ICSS = this.$el.style
+      const style = this.$el.style as ICSS
       style[key] = styles[key]
     })
   }
 
   getStyles(styles:string[] = []) {
-    return styles.reduce((res:IndexableString, s:any) => {
-      res[s] = this.$el.style[s]
+    return styles.reduce((res:IndexableString, s:string) => {
+      const style = this.$el.style as ICSS
+      res[s] = style[s] as string
       return res
     }, {})
   }

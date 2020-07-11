@@ -1,3 +1,6 @@
+import {changeTextData} from './actions';
+import {TableResizeHandler} from './../type'
+import {IndexableObject, KeyState, Actions, Indexable, State} from '@/type'
 import {
   TABLE_RESIZE,
   CHANGE_TITLE,
@@ -10,21 +13,21 @@ import {
   UPDATE_DATE,
 } from './types'
 
-const prevState: any[] = []
-const nextState: any[] = []
+const prevState: State[] = []
+const nextState: State[] = []
 
-export function rootReducer(state: any, action: any) {
+export function rootReducer(state: State, action: Actions): State {
   let copyState
   let isEmptyState
-  let field
-  let val: any
+  let field: KeyState
+  let val: IndexableObject
   switch (action.type) {
     case TABLE_RESIZE:
       field = action.data.type === 'col' ? 'colState' : 'rowState'
       prevState.unshift({...state})
       return {
         ...state,
-        [field]: value(state, field, action),
+        [field]: value(state, field, action.data),
         ['prevState']: true,
         ['nextState']: false,
       }
@@ -34,21 +37,20 @@ export function rootReducer(state: any, action: any) {
       return {
         ...state,
         currentText: action.data.value,
-        [field]: value(state, field, action),
+        [field]: value(state, field, action.data),
         ['prevState']: true,
         ['nextState']: false,
       }
     case CHANGE_STYLES:
       return {...state, currentStyles: action.data}
     case APPLY_STYLE:
-      field = 'stylesState'
-      val = state[field] || {}
-      action.data.ids.forEach((id: any) => {
+      val = state['stylesState'] || {}
+      action.data.ids.forEach((id: string) => {
         val[id] = {...val[id], ...action.data.value}
       })
       return {
         ...state,
-        [field]: val,
+        ['stylesState']: val,
         currentStyles: {...state.currentStyles, ...action.data.value},
       }
     case CHANGE_TITLE:
@@ -93,13 +95,17 @@ export function rootReducer(state: any, action: any) {
   }
 }
 
-function value(state: any, field: string, action: any) {
-  const val = {...state[field]} || {}
-  val[action.data.id] = action.data.value
+function value(
+  state: State,
+  field: KeyState,
+  data: TableResizeHandler | changeTextData
+) {
+  const val = {...state[field] as Indexable} || {}
+  val[data.id] = data.value
   return val
 }
 
-function changeState(prevState: any, nextState: any, state: any) {
+function changeState(prevState: State[], nextState: State[], state: State) {
   prevState.shift()
   nextState.unshift({...state})
 }

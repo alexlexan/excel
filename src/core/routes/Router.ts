@@ -1,22 +1,17 @@
-import {ExcelPage} from './../../pages/ExcelPage'
-import {DashboardPage} from './../../pages/DashboardPage'
+import {ExcelPage} from '@/pages/ExcelPage'
+import {DashboardPage} from '@/pages/DashboardPage'
+import {RoutesType} from '@/type'
 import {ActiveRoute} from './ActiveRoute'
 import {Dom, $} from '@/core/dom'
 import {loader} from '@/components/Loader'
 
-type RoutesType = {
-  dashboard: typeof DashboardPage,
-  excel: typeof ExcelPage,
-}
 
 export class Router {
   $placeholder: Dom
-  routes: RoutesType
   loader: Dom
   page: DashboardPage | ExcelPage | null
-  constructor(selector: string, routes: RoutesType) {
+  constructor(selector: string, readonly routes: RoutesType) {
     this.$placeholder = $(selector)
-    this.routes = routes
     this.loader = loader()
     this.page = null
     this.changePageHandler = this.changePageHandler.bind(this)

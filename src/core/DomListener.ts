@@ -2,16 +2,12 @@ import {Dom} from './dom';
 import {capitalize} from './utils'
 
 export class DomListener {
-  $root: Dom
-  listeners: string[]
   name: string
 
-  constructor($root: Dom, listeners: string[] = []) {
+  constructor(readonly $root: Dom, readonly listeners: string[] = []) {
     if (!$root) {
       throw new Error('No $root provier for DomListener!')
     }
-    this.$root = $root
-    this.listeners = listeners
   }
 
   initDOMListeners(this:any):void {

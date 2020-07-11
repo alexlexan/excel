@@ -1,4 +1,4 @@
-import {IndexableString} from './../../type'
+import {IndexableString} from '@/type'
 import {componentOptionsType, EventTargetElement} from '@/type'
 import {Dom, $} from '@/core/dom'
 import {ExcelComponent} from '@core/ExcelComponent'
@@ -26,7 +26,7 @@ export class Formula extends ExcelComponent {
     this.$formula.text(currentText)
   }
 
-  onInput(event: EventTargetElement): void {
+  onInput(event: EventTargetElement) {
     this.$emit('formula:input', $(event.target).text())
   }
 

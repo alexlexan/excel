@@ -1,4 +1,5 @@
 import {IndexableString} from '@/type'
+
 export function capitalize(string: string): string {
   if (typeof string !== 'string') {
     return ''
@@ -44,7 +45,7 @@ export function toObjectStyles(styles: string) {
   styles.replace(
     r,
     (m, p, v) =>
-      (o[p.replace(/-(.)/g, (s: any, p: any) => p.toUpperCase())] = v)
+      (o[p.replace(/-(.)/g, (s: string, p: string) => p.toUpperCase())] = v)
   )
   return o
 }

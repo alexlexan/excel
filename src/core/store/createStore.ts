@@ -1,5 +1,6 @@
-import {State} from '@/type'
-export function createStore(rootReducer: Function, initialState: State) {
+import {State, rootReducerType, Actions} from '@/type'
+
+export function createStore(rootReducer: rootReducerType, initialState: State) {
   let state = rootReducer({...initialState}, {type: '__INIT__'})
   let listeners: Function[] = []
   return {
@@ -11,7 +12,7 @@ export function createStore(rootReducer: Function, initialState: State) {
         },
       }
     },
-    dispatch(action: any) {
+    dispatch(action: Actions) {
       state = rootReducer(state, action)
       listeners.forEach((listener) => listener(state))
     },

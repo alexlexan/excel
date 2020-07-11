@@ -21,7 +21,7 @@ export class Excel {
   }
 
   getRoot(): Dom {
-    const $root: Dom = $.create('div', 'excel')
+    const $root = $.create('div', 'excel')
 
     const componentOptions: componentOptionsType = {
       emmiter: this.emmiter,
@@ -29,7 +29,7 @@ export class Excel {
     }
 
     this.components = this.components.map((Component: ComponentNameType) => {
-      const $el: Dom = $.create('div', Component.className)
+      const $el = $.create('div', Component.className)
       const component = new Component($el, componentOptions)
 
       $el.html(component.toHTML())
@@ -42,7 +42,8 @@ export class Excel {
 
   init(): void {
     this.store.dispatch(updateData())
-    this.subscriber.subscribeComponents(this.components as ComponentNameType[])
+    this.subscriber
+      .subscribeComponents(this.components as ComponentTypeInstance[])
 
     this.components.forEach((component: ComponentTypeInstance) =>
       component.init()

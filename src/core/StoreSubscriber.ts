@@ -1,4 +1,4 @@
-import {Store} from '@/type'
+import {Store, State, KeyState} from '@/type'
 import {isEqual} from './utils'
 import {ComponentTypeInstance} from '@/type'
 
@@ -6,25 +6,20 @@ type SubscribeType = {
   unsubscribe(): void,
 }
 
-type ObjectLiteral = {
-  [key: number]: string,
-  [key: string]: string,
-}
-
 export class StoreSubscriber {
   store: Store
   sub: null | SubscribeType
-  prevState: ObjectLiteral
+  prevState: State
   constructor(store: Store) {
     this.store = store
     this.sub = null
     this.prevState = {}
   }
 
-  subscribeComponents(components: any) {
+  subscribeComponents(components: ComponentTypeInstance[]) {
     this.prevState = this.store.getState()
-    this.sub = this.store.subscribe((state: ObjectLiteral) => {
-      Object.keys(state).forEach((key) => {
+    this.sub = this.store.subscribe((state: State) => {
+      Object.keys(state).forEach((key: KeyState) => {
         if (!isEqual(this.prevState[key], state[key])) {
           components.forEach((component: ComponentTypeInstance) => {
             if (component.isWatching(key)) {

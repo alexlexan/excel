@@ -99,7 +99,7 @@ function withWidthFrom(state: State) {
   }
 }
 
-export function createTable(rowsCount: number = 20, state: State = {}): string {
+export function createTable(rowsCount: number = 50, state: State = {}): string {
   const colsCount: number = CODES.Z - CODES.A + 1
   const rows: string[] = []
 

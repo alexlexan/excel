@@ -1,4 +1,4 @@
-import {IndexableString} from './../type'
+import {IndexableString} from '@/type'
 import {Dom} from './dom'
 import {ExcelComponent, IOptions} from './ExcelComponent'
 
@@ -17,7 +17,7 @@ export class ExcelStateComponent extends ExcelComponent {
     this.state = {...initialState}
   }
 
-  setState(newState: any) {
+  setState(newState: {[key: string]: any}) {
     this.state = {...this.state, ...newState}
     this.$root.html(this.template)
   }

@@ -1,13 +1,13 @@
+import {State} from '@/type';
+import {LocalStorageClient} from '@/shared/LocalStorageClient'
 import {debounce} from '../utils'
 
 export class StateProcessor {
-  client: any
-  constructor(client: any, delay: number = 300) {
-    this.client = client
+  constructor(readonly client: LocalStorageClient, delay: number = 300) {
     this.listen = debounce(this.listen.bind(this), delay)
   }
 
-  listen(state: any) {
+  listen(state: State) {
     this.client.save(state)
   }
 

@@ -1,10 +1,4 @@
-import {IndexableString} from './../../type'
-import {storage, isEmpty} from '@/core/utils'
-type ToolbarButton = {
-  icon: string,
-  active: boolean,
-  value: {[key: string]: string} | string,
-}
+import {IndexableString, ToolbarButton} from '@/type'
 
 function toButton(button: ToolbarButton) {
   const value =

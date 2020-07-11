@@ -1,4 +1,4 @@
-# excel
+# Excel
 Pure Javascript 
 
 Технологии:
